@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<!-- ^ Tells the browser this is a modern HTML5 document. It must be the very first line. -->
+
+<!--
+  ===================================================================
+  index.html: Home page for "Lumen & Loam" (a fictional smart-planter company)
+  -------------------------------------------------------------------
+  Page structure (top to bottom):
+    1. <head>        : page settings, title, and links to stylesheets/fonts
+    2. Navigation    : sticky top menu that collapses on small screens
+    3. Hero          : big intro banner with headline and buttons
+    4. Stats strip   : four numbers that "count up" when scrolled into view
+    5. <main>        : Features, How it works, Testimonials, FAQ, Call to action
+    6. Footer        : company name, links, copyright
+    7. Scripts       : Bootstrap's JavaScript + my own scroll animations
+
+  This page uses Bootstrap 5, a CSS framework. Most class names 
+  (container, row, col-*, btn, mb-3, d-flex, etc.) come from Bootstrap.
+  Custom classes (hero, leaf, stat-number, feature-card, reveal, etc.)
+  are defined in css/styles.css.
+  ===================================================================
+-->
+
+<!-- Root element of the page. lang="en" tells browsers and screen readers the content is in English. -->
+<html lang="en">
+
+<!-- ================= HEAD =================
+     Everything in <head> is information ABOUT the page.
+     None of it is shown directly in the page body. -->
+<head>
+  <!-- Character encoding: UTF-8 supports all letters, accents, and symbols. -->
+  <meta charset="UTF-8">
+
+  <!-- Makes the page scale properly on phones and tablets (essential for responsive design).
+       width=device-width matches the screen width; initial-scale=1.0 means no zoom on load. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Text shown in the browser tab and in search engine results.
+       &amp; is the HTML code for the "&" character. -->
+  <title>Root &amp; Radiance | Smart Planters That Water Themselves</title>
+
+  <!-- Short summary that search engines (like Google) may show under the page title. -->
+  <meta name="description" content="Root &amp; Radiance makes the Sprout Pod, a smart self-watering planter designed in Regina, Saskatchewan.">
+
+  <!-- Favicon: the small icon shown in the browser tab. Uses an SVG image file. -->
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml">
+
+  <!-- Bootstrap CSS from a CDN (Content Delivery Network). Provides the grid layout,
+       buttons, navbar, carousel, accordion, and spacing utility classes. -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons: an icon font. Used with tags like <i class="bi bi-arrow-right"></i>. -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- "preconnect" opens a connection to Google Fonts' servers early,
+       so the fonts below download faster. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <!-- crossorigin is needed because font files are fetched from a different domain. -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Loads two Google Fonts:
+         - Fraunces (a serif font for headings): weights 600 and 700, plus italic 600
+         - Inter (a clean sans-serif for body text): weights 400, 600, 700
+       display=swap shows a fallback font immediately, then swaps in the real font once loaded. -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Our own custom stylesheet. Loaded LAST so its rules can override Bootstrap's defaults. -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<!-- ================= BODY =================
+     Everything inside <body> is what visitors actually see. -->
+<body>
+
+  <!-- Navigation -->
+  <!-- <nav> marks this as the site's navigation menu.
+       navbar            : Bootstrap navigation bar component
+       navbar-expand-md  : show the full menu on medium screens (768px+) and wider;
+                           on smaller screens, collapse it behind a "hamburger" button
+       site-nav          : my custom styling (in styles.css)
+       sticky-top        : the bar stays stuck to the top of the window while scrolling -->
+  <nav class="navbar navbar-expand-md site-nav sticky-top">
+    <!-- container: centers content and gives it a max width with side padding. -->
+    <div class="container">
+      <!-- Brand/logo link: clicking it returns to the home page. -->
+      <a class="navbar-brand" href="index.html">
+        <!-- alt="" (empty) because the logo is decorative; the text next to it already says the name. -->
+        <img src="images/logo.svg" alt=""> Root &amp; Radiance
+      </a>
+
+      <!-- "Hamburger" button that only appears on small screens.
+           data-bs-toggle="collapse"   : tells Bootstrap's JS this button shows/hides something
+           data-bs-target="#mainNav"   : the element to show/hide (the menu below, id="mainNav")
+           aria-* attributes           : describe the button to screen readers
+             aria-controls  = which element it controls
+             aria-expanded  = whether the menu is currently open (Bootstrap updates this)
+             aria-label     = the button's spoken name, since it has no visible text -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+              aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- Draws the three-line hamburger icon. -->
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- The collapsible part of the menu. Hidden on small screens until the button is clicked. -->
+      <div class="collapse navbar-collapse" id="mainNav">
+        <!-- ms-auto = "margin-start: auto", which pushes the links to the right side. -->
+        <ul class="navbar-nav ms-auto">
+          <!-- "active" highlights the current page's link.
+               aria-current="page" tells screen readers "you are here". -->
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="sprout-pod.html">Shop the Sprout Pod</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero: animated gradient, falling leaves, floating product -->
+  <!-- <header> holds the introductory banner. The "hero" class (styles.css)
+       adds the animated gradient background. -->
+  <header class="hero">
+    <!-- Decorative falling leaves. Each empty <span class="leaf"> is drawn and
+         animated purely with CSS. aria-hidden="true" hides them from screen readers
+         because they carry no meaning. -->
+    <div aria-hidden="true">
+      <span class="leaf"></span><span class="leaf"></span><span class="leaf"></span>
+      <span class="leaf"></span><span class="leaf"></span><span class="leaf"></span>
+    </div>
+
+    <!-- position-relative keeps this content layered ABOVE the leaves. -->
+    <div class="container position-relative">
+      <!-- Bootstrap grid: a "row" holds "col" columns. align-items-center
+           vertically centers the two columns against each other. -->
+      <div class="row align-items-center">
+
+        <!-- LEFT column: full width (12 of 12) on phones, 7 of 12 on medium screens and up. -->
+        <div class="col-12 col-md-7">
+          <!-- Small rounded "pill" label with a yellow (warning) background. mb-3 = margin below. -->
+          <span class="badge rounded-pill text-bg-warning mb-3">New: Halo Grow Light add-on</span>
+
+          <!-- Main page heading. There should be only one <h1> per page.
+               The inner <span> lets CSS style "brilliant." differently (in this case a different color). -->
+          <h1>Grow something <span>brilliant.</span></h1>
+
+          <!-- "lead" makes the paragraph larger. my-4 = margin on top and bottom. -->
+          <p class="lead my-4">
+            Meet the Sprout Pod, the smart planter that waters your plants for you.
+            One fill lasts up to four weeks.
+          </p>
+
+          <!-- Button group:
+               d-flex                     : lay children out in a row (flexbox)
+               flex-wrap                  : let buttons wrap to a new line if there isn't room
+               gap-3                      : space between buttons
+               justify-content-center     : center buttons on small screens
+               justify-content-md-start   : left-align them on medium screens and up -->
+          <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
+            <!-- Primary call-to-action button. btn-brand is a custom color (styles.css); btn-lg = large.
+                 &mdash; is a long dash. The <i> tag shows a right-arrow icon; ms-1 adds a little space before it. -->
+            <a href="sprout-pod.html" class="btn btn-brand btn-lg">
+              Shop now for $89 <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+            <!-- Secondary button with an outline style. -->
+            <a href="about.html" class="btn btn-outline-brand btn-lg">Our story</a>
+          </div>
+        </div>
+
+        <!-- RIGHT column: product image. 5 of 12 columns on medium+ screens, centered. -->
+        <div class="col-12 col-md-5 text-center">
+          <!-- hero-product (styles.css) gives the image its floating animation.
+               alt text describes the image for screen readers and if it fails to load. -->
+          <img class="hero-product" src="images/sprout-pod.svg" alt="The Sprout Pod smart planter with a healthy plant">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Animated stats -->
+  <!-- A band of four statistics. Each number starts at "0" and the JavaScript at the
+       bottom of the page counts it up when it scrolls into view.
+         data-count  : the final number to count up to
+         data-suffix : text added after the number (e.g. "+", " days", "%")
+       "data-*" attributes are custom attributes that JavaScript can read. -->
+  <section class="stats-strip">
+    <div class="container">
+      <!-- text-center centers the text; g-3 sets the gutter (gap) between columns. -->
+      <div class="row text-center g-3">
+        <!-- Each stat: 2 per row on phones (6 of 12 columns), 4 per row on medium+ (3 of 12). -->
+        <div class="col-6 col-md-3">
+          <div class="stat-number" data-count="85000" data-suffix="+">0</div>
+          <div>happy plants</div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-number" data-count="28" data-suffix=" days">0</div>
+          <div>between refills</div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-number" data-count="100" data-suffix="%">0</div>
+          <div>recycled shell</div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-number" data-count="3" data-suffix="-yr">0</div>
+          <div>warranty</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <main> wraps the page's primary content. Screen readers can jump straight to it. -->
+  <main>
+    <!-- Features -->
+    <!-- py-5 = large padding top and bottom; my-md-4 = extra margin on medium+ screens. -->
+    <section class="container py-5 my-md-4">
+      <!-- Section heading block. mb-5 = large margin below.
+           "reveal" is a custom class: the element starts hidden/faded, and the JavaScript
+           adds a "visible" class to fade it in when it scrolls into view. -->
+      <div class="text-center mb-5 reveal">
+        <!-- Small label above the heading (custom style). -->
+        <p class="section-label">Why the Sprout Pod</p>
+        <!-- display-6 is a Bootstrap class for a large, stylish heading size. -->
+        <h2 class="display-6">Plant care, minus the guesswork</h2>
+      </div>
+
+      <!-- Four feature cards. g-4 = gap between cards. -->
+      <div class="row g-4">
+        <!-- Responsive sizing: 1 per row on phones (12), 2 per row on tablets (md-6),
+             4 per row on large screens (lg-3). Each card fades in via "reveal". -->
+        <div class="col-12 col-md-6 col-lg-3 reveal">
+          <div class="feature-card">
+            <!-- Circle containing an icon. "bi-droplet-half" is a water-drop icon from Bootstrap Icons. -->
+            <div class="feature-icon"><i class="bi bi-droplet-half"></i></div>
+            <!-- An <h3> (correct heading level under the <h2>), but styled to LOOK like an h5. -->
+            <h3 class="h5">Waters itself</h3>
+            <!-- mb-0 removes the default bottom margin so the card has no extra space at the bottom. -->
+            <p class="mb-0">A soil sensor releases water only when your plant is thirsty.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 reveal">
+          <div class="feature-card">
+            <!-- Phone icon. -->
+            <div class="feature-icon"><i class="bi bi-phone"></i></div>
+            <h3 class="h5">Talks to you</h3>
+            <p class="mb-0">The free app tells you in plain language how your plant is doing.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 reveal">
+          <div class="feature-card">
+            <!-- Sun icon. -->
+            <div class="feature-icon"><i class="bi bi-brightness-high"></i></div>
+            <h3 class="h5">Tracks light</h3>
+            <p class="mb-0">Find the sunniest spot in your home with live light readings.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 reveal">
+          <div class="feature-card">
+            <!-- Recycling icon. -->
+            <div class="feature-icon"><i class="bi bi-recycle"></i></div>
+            <h3 class="h5">Kind to Earth</h3>
+            <p class="mb-0">Made from ocean-bound plastic and shipped plastic-free.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <!-- pb-5 = padding at the bottom only. -->
+    <section class="container pb-5">
+      <!-- Two-column layout; g-5 = big gap between the columns. -->
+      <div class="row align-items-center g-5">
+        <!-- LEFT: intro text. Full width on phones, 5 of 12 columns on large screens. -->
+        <div class="col-12 col-lg-5 reveal">
+          <p class="section-label">How it works</p>
+          <h2 class="display-6">Three steps to a thriving plant</h2>
+          <!-- text-muted makes the text a softer gray. -->
+          <p class="text-muted">Most customers are up and growing in under five minutes.</p>
+        </div>
+
+        <!-- RIGHT: the three steps. 7 of 12 columns on large screens. -->
+        <div class="col-12 col-lg-7">
+          <!-- Each step is a flex row: number bubble on the left, text on the right.
+               gap-3 = space between them; mb-4 = space below each step. -->
+          <div class="d-flex gap-3 mb-4 reveal">
+            <!-- step-num draws the numbered circle (styles.css).
+                 flex-shrink-0 stops the circle from getting squished when text is long. -->
+            <span class="step-num flex-shrink-0">1</span>
+            <div><h3 class="h5 mb-1">Pot your plant</h3><p class="mb-0">Drop in any plant up to 15 cm wide, or start from seed with our starter kit.</p></div>
+          </div>
+          <div class="d-flex gap-3 mb-4 reveal">
+            <span class="step-num flex-shrink-0">2</span>
+            <div><h3 class="h5 mb-1">Fill the reservoir</h3><p class="mb-0">Pour 2 litres into the side port. The window shows you exactly how much is left.</p></div>
+          </div>
+          <!-- Last step has no mb-4, so there's no extra space after it. -->
+          <div class="d-flex gap-3 reveal">
+            <span class="step-num flex-shrink-0">3</span>
+            <div><h3 class="h5 mb-1">Relax</h3><p class="mb-0">The pod does the rest. We'll send you a nudge when it's time for a refill.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials carousel -->
+    <!-- A rotating slideshow of customer quotes, powered by Bootstrap's carousel component. -->
+    <section class="testimonials text-center">
+      <div class="container">
+        <p class="section-label">Kind words</p>
+        <!-- The carousel itself:
+               id="testimonialCarousel"  : name used by the indicator buttons below to target it
+               carousel slide            : Bootstrap carousel with a sliding transition
+               data-bs-ride="carousel"   : start auto-playing as soon as the page loads
+               data-bs-interval="6000"   : show each slide for 6000 ms (6 seconds) -->
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+          <!-- carousel-inner holds all the slides. -->
+          <div class="carousel-inner">
+            <!-- Each "carousel-item" is one slide. Exactly ONE must have "active"
+                 so the carousel knows which slide to show first. -->
+            <div class="carousel-item active">
+              <!-- <blockquote> is the semantic tag for a quotation.
+                   &ldquo; and &rdquo; are curly left/right double quotes. -->
+              <blockquote>&ldquo;I've killed every plant I've ever owned. My basil is now three months old and thriving.&rdquo;</blockquote>
+              <!-- fw-semibold = semi-bold text. &middot; is a centered dot separator. -->
+              <p class="fw-semibold mb-0">Omar K. &middot; Regina, SK</p>
+            </div>
+            <div class="carousel-item">
+              <blockquote>&ldquo;I left on a two-week vacation and came home to a plant that looked better than when I left.&rdquo;</blockquote>
+              <p class="fw-semibold mb-0">Alex R. &middot; Toronto, ON</p>
+            </div>
+            <div class="carousel-item">
+              <blockquote>&ldquo;Beautiful design, and it's genuinely useful. I bought four more for my office.&rdquo;</blockquote>
+              <p class="fw-semibold mb-0">Megan T. &middot; Seattle, WA</p>
+            </div>
+          </div>
+
+          <!-- Indicator dots under the carousel. Clicking one jumps to that slide.
+                 data-bs-target    : which carousel to control
+                 data-bs-slide-to  : which slide to show (counting starts at 0)
+                 class="active" + aria-current="true" mark the dot for the slide shown first
+                 aria-label gives each dot a spoken name for screen readers -->
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Testimonial 1"></button>
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1" aria-label="Testimonial 2"></button>
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2" aria-label="Testimonial 3"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ accordion -->
+    <!-- Frequently asked questions. Click a question to expand its answer;
+         opening one automatically closes the others (Bootstrap accordion). -->
+    <section class="container py-5">
+      <div class="row g-5">
+        <!-- LEFT: intro text (4 of 12 columns on large screens). -->
+        <div class="col-12 col-lg-4 reveal">
+          <p class="section-label">Questions?</p>
+          <h2 class="display-6">Good to know</h2>
+          <p class="text-muted">Can't find your answer? <a href="about.html">Get in touch</a>.</p>
+        </div>
+
+        <!-- RIGHT: the accordion (8 of 12 columns on large screens). -->
+        <div class="col-12 col-lg-8 reveal">
+          <!-- id="faq" is the accordion's name. Each panel below refers to it with
+               data-bs-parent="#faq" so that only one panel is open at a time. -->
+          <div class="accordion" id="faq">
+
+            <!-- ----- Question 1 (starts OPEN) ----- -->
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <!-- The clickable question.
+                       data-bs-toggle="collapse"  : clicking shows/hides a panel
+                       data-bs-target="#faq1"     : the answer panel to show/hide
+                       aria-expanded="true"       : it starts open
+                       aria-controls="faq1"       : tells screen readers which panel it controls
+                     No "collapsed" class here, because this one starts open. -->
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
+                  Which plants work in a Sprout Pod?
+                </button>
+              </h3>
+              <!-- The answer panel. "collapse" makes it hideable; "show" means it starts visible. -->
+              <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faq">
+                <div class="accordion-body">Almost any houseplant or herb up to 15 cm wide: pothos, monstera, basil, mint, peace lilies and more. Succulents work too; just switch the pod to "dry mode" in the app.</div>
+              </div>
+            </div>
+
+            <!-- ----- Question 2 (starts CLOSED) ----- -->
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <!-- "collapsed" class and aria-expanded="false" mean this starts closed. -->
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+                  Do you ship to the United States?
+                </button>
+              </h3>
+              <!-- No "show" class, so the answer starts hidden. -->
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faq">
+                <div class="accordion-body">Yes! Shipping within Canada is always free. Orders to the U.S. include a 10% import tariff, calculated at checkout.</div>
+              </div>
+            </div>
+
+            <!-- ----- Question 3 (starts CLOSED) ----- -->
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+                  Do I need Wi-Fi?
+                </button>
+              </h3>
+              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faq">
+                <div class="accordion-body">No. The pod waters on its own without any connection. Wi-Fi or Bluetooth is only needed if you want live readings in the app.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to action -->
+    <!-- A final colored banner encouraging visitors to buy. Fades in via "reveal". -->
+    <section class="container reveal">
+      <!-- cta-band (styles.css) gives the banner its background color and rounded corners. -->
+      <div class="cta-band text-center">
+        <h2 class="display-6">Ready to grow something brilliant?</h2>
+        <p class="lead mb-4">Free shipping across Canada. 3-year warranty. Happy plants guaranteed.</p>
+        <!-- White (btn-light), large, pill-shaped button. px-4 = extra horizontal padding.
+             The inline style sets the text color to the "forest" green color variable
+             defined in styles.css. -->
+        <a href="sprout-pod.html" class="btn btn-light btn-lg rounded-pill px-4 fw-semibold" style="color: var(--forest)">
+          Get your Sprout Pod <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <!-- Bottom of the page: brand name, links, and copyright notice. -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row g-4">
+        <!-- LEFT half (on medium+ screens): company name and tagline. -->
+        <div class="col-12 col-md-6">
+          <h5>Root &amp; Radiance</h5>
+          <!-- "small" makes the text slightly smaller. -->
+          <p class="small mb-0">Grow something brilliant.</p>
+        </div>
+        <!-- RIGHT half: footer links, right-aligned on medium+ screens (text-md-end). -->
+        <div class="col-12 col-md-6 text-md-end">
+          <a href="index.html">Home</a> &middot;
+          <a href="about.html">About</a> &middot;
+          <a href="sprout-pod.html">Shop</a>
+        </div>
+      </div>
+      <!-- Copyright line. &copy; renders the (c) copyright symbol. mt-4 = margin on top. -->
+      <p class="small text-center mt-4 mb-0">&copy; 2026 Root &amp; Radiance Inc. A fictional company created by Omar Khorbatly for a web design project.</p>
+    </div>
+  </footer>
+
+  <!-- ================= SCRIPTS =================
+       Scripts are placed at the END of <body> so the page content loads and
+       appears first, and so all the elements exist before the code runs. -->
+
+  <!-- Bootstrap's JavaScript bundle. Makes the interactive parts work:
+       the mobile menu toggle, the carousel, and the FAQ accordion.
+       "bundle" means it includes Popper, a helper library Bootstrap needs. -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Our own JavaScript for the scroll animations. -->
+  <script>
+    // Fade sections in as they scroll into view, and count up the stats once.
+
+    // IntersectionObserver is a built-in browser tool that watches elements and
+    // tells us when they enter or leave the visible part of the screen (the "viewport").
+    // We give it a callback function that runs whenever a watched element's visibility changes.
+    const observer = new IntersectionObserver((entries) => {
+      // "entries" is a list of the elements whose visibility just changed.
+      entries.forEach((entry) => {
+        // If this element is NOT on screen yet, skip it and do nothing.
+        if (!entry.isIntersecting) return;
+
+        // Add the "visible" class. The CSS in styles.css uses this to fade/slide the element in.
+        entry.target.classList.add("visible");
+
+        // If the element has a data-count attribute (i.e. it's one of the stat numbers),
+        // start the count-up animation. dataset.count reads the "data-count" attribute.
+        if (entry.target.dataset.count) countUp(entry.target);
+
+        // Stop watching this element so the animation only ever happens once.
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.2 }); // Trigger when at least 20% of the element is visible.
+
+    // Find every element with the class "reveal" OR "stat-number"
+    // and tell the observer to start watching each one.
+    document.querySelectorAll(".reveal, .stat-number").forEach((el) => observer.observe(el));
+
+    // Animates a number from 0 up to its target value (e.g. 0 -> 85,000+).
+    // "el" is the HTML element whose text we update.
+    function countUp(el) {
+      // Read the final number from data-count. Attributes are text, so convert to a Number.
+      const target = Number(el.dataset.count);
+      // Read the suffix (like "+" or "%"). If there isn't one, use an empty string.
+      const suffix = el.dataset.suffix || "";
+      // How long the animation lasts, in milliseconds (1500 ms = 1.5 seconds).
+      const duration = 1500;
+      // Record the exact start time. performance.now() is a high-precision timer.
+      const start = performance.now();
+
+      // "step" draws one frame of the animation. The browser passes in the current time ("now").
+      const step = (now) => {
+        // How far through the animation we are, from 0 (start) to 1 (finished).
+        // Math.min caps it at 1 so it never overshoots.
+        const progress = Math.min((now - start) / duration, 1);
+        // "Ease-out cubic": makes the count start fast and slow down near the end,
+        // which looks smoother than a constant speed.
+        const eased = 1 - Math.pow(1 - progress, 3);
+        // Compute the current number, round it to a whole number, format it with
+        // Canadian-English thousands separators (85000 -> "85,000"), then add the suffix.
+        el.textContent = Math.round(target * eased).toLocaleString("en-CA") + suffix;
+        // If we're not finished, ask the browser to run "step" again on the next screen refresh.
+        if (progress < 1) requestAnimationFrame(step);
+      };
+
+      // Kick off the animation by requesting the first frame.
+      // requestAnimationFrame syncs updates with the screen's refresh rate (usually 60 times per second).
+      requestAnimationFrame(step);
+    }
+  </script>
+</body>
+</html>
